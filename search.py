@@ -61,10 +61,10 @@ print("""
 Please enter 'https://www.yad2.co.il/vehicles/private-cars', filter out your results as you wish.
 Mark Image&Price only and paste the URL
 """)
-url = str(input("You may enter '0' for default link in order to use test link: "))
+url = str(input("You may enter '0' for default link in order to use test link: ") or '0')
 if '0' == url:
     url = 'https://www.yad2.co.il/vehicles/private-cars?year=2010--1&price=-1-28000&km=10000-100000&ownerID=1&gearBox=1&imgOnly=1&priceOnly=1'
-pages = int(input("How many pages to search?: "))
+pages = int(input("How many pages to search?: ") or 1)
 chrome_options = webdriver.ChromeOptions()
 chrome_options.add_argument("--start-maximized")
 browser = webdriver.Chrome('./chromedriver', options=chrome_options)
