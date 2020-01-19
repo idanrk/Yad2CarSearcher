@@ -17,7 +17,7 @@ def gatherdetails(max_price, max_kilo):
         if post <= 20:
             feed.click()
             post += 1
-            time.sleep(3)
+            time.sleep(2)
             # car_year = feed.find_element_by_xpath('.//div[@class="data"]/span').text
             car_name = feed.find_element_by_xpath('.//div[@class="rows"]/span[@class="title"]').text
             car_kilo = int(feed.find_element_by_xpath('.//dd[@id="more_details_kilometers"]/span').text)
@@ -28,30 +28,31 @@ def gatherdetails(max_price, max_kilo):
             ## if its worthy, return True, then add to whishlist
             if calculator(max_price, max_kilo, car_price, car_kilo):
                 addwhishlist(feed)
-                time.sleep(2)
                 if firstime:
+                    time.sleep(2)
                     browser.find_element_by_xpath(
                         '*//button[@class="y2-button y2-raised y2-primary left_button"]').click()
                     timesRun += 1
                     firstime = False
             # closing post and moving to the next
+            time.sleep(1)
             feed.find_element_by_xpath('*//div/div').click()
             height = str(int(height) - 100)
             browser.execute_script("window.scrollTo(0,{})".format(height))
-            time.sleep(1)
 
 
 def calculator(max_price, max_kilo, price, kilo):
-    # max_price, max_kilo, price, kilo, year = [int(i) for i in input().split()]
-    if price / max_price <= 0.85 and kilo / max_kilo <= 0.9:
-        return True
-    elif price / max_price <= 0.75:
-        return True
-    elif kilo / max_kilo <= 0.65:
-        return True
+#first if is to avoid fake posts
+    if price > 1_000 and kilo > 1_000:
+        if price / max_price <= 0.85 and kilo / max_kilo <= 0.9:
+            return True
+        elif price / max_price <= 0.75:
+            return True
+        elif kilo / max_kilo <= 0.65:
+            return True
     else:
         return False
-
+    return False
 
 def addwhishlist(feed):
     feed.find_element_by_xpath('.//button[@class="like_icon"]').click()
