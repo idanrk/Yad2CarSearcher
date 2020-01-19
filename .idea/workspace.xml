@@ -17,6 +17,10 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="PATH_TO_GIT" value="C:\Users\idan9\AppData\Local\GitHubDesktop\GitHubDesktop.exe" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="ProjectId" id="1WTwjex8fovjQptPRIMIIRJ93Xf" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -28,7 +32,7 @@
     <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="PyConsoleConfigurable.Python Console" />
+    <property name="settings.editor.selected.configurable" value="vcs.Git" />
   </component>
   <component name="RunManager">
     <configuration name="search" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
@@ -84,6 +88,10 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
+    <state x="442" y="112" key="FileChooserDialogImpl" timestamp="1579458012331">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="442" y="112" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1579458012331" />
     <state width="1323" height="179" key="GridCell.Tab.0.bottom" timestamp="1579437947456">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -116,10 +124,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state width="1323" height="223" key="GridCell.Tab.1.right/0.0.1366.728@0.0.1366.728" timestamp="1579283435867" />
-    <state x="163" y="0" key="SettingsEditor" timestamp="1579187723355">
+    <state x="163" y="0" key="SettingsEditor" timestamp="1579458018644">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="163" y="0" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1579187723355" />
+    <state x="163" y="0" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1579458018644" />
     <state x="339" y="162" key="run.anything.popup" timestamp="1579426919764">
       <screen x="0" y="0" width="1366" height="728" />
     </state>

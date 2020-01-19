@@ -59,7 +59,7 @@ def addwhishlist(feed):
 ###### there is many sleeping functions because the site and posts must load so the code won't break ######
 print("""
 Please enter 'https://www.yad2.co.il/vehicles/private-cars', filter out your results as you wish.
-Mark Image&Price only and paste the URL :      
+Mark Image&Price only and paste the URL
 """)
 url = str(input("You may enter '0' for default link in order to use test link: "))
 if '0' == url:
@@ -70,6 +70,12 @@ chrome_options.add_argument("--start-maximized")
 browser = webdriver.Chrome('./chromedriver', options=chrome_options)
 max_price = 28000
 max_kilo = 100_000
+## reset page in case page is already given ##
+if 'page=' in url:
+    print("Reseting page.. starting from page 1...")
+    url = url.split('&')
+    del url[-1]
+    url = '&'.join(url)
 url = url + '&page=0'
 timesRun = 1
 for page in range(1, pages + 1):
