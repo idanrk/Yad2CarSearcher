@@ -2,7 +2,7 @@ from selenium import webdriver
 from fake_useragent import UserAgent
 import time
 
-
+#By Idan Rokach
 def gatherdetails(max_price, max_kilo):
     global timesRun
     firstsave = True if timesRun == 1 else False
