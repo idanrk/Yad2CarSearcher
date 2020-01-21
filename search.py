@@ -1,4 +1,5 @@
 from selenium import webdriver
+from fake_useragent import UserAgent
 import time
 
 
@@ -13,10 +14,10 @@ def gatherdetails(max_price, max_kilo):
     post = 1
     for feed in browser.find_elements_by_xpath('//div[@class="feeditem table"]'):
         if post <= 20:
-            time.sleep(1)
+            time.sleep(5)
             feed.click()
             post += 1
-            time.sleep(1.5)
+            time.sleep(2)
             try:
                 car_kilo = int(feed.find_element_by_xpath('.//dd[@id="more_details_kilometers"]/span').text)
                 car_price = feed.find_element_by_xpath('.//div[@data-test-id="item_price"]').text
@@ -36,7 +37,6 @@ def gatherdetails(max_price, max_kilo):
                     understand = browser.find_element_by_xpath(
                         '*//button[@class="y2-button y2-raised y2-primary left_button"]')
                     browser.execute_script("arguments[0].scrollIntoView({behavior: 'smooth'})", understand)
-                    print(understand.text)
                     understand.click()
                     time.sleep(0.5)
                     browser.execute_script("arguments[0].scrollIntoView({behavior: 'smooth'})", feed)
@@ -78,12 +78,17 @@ if '0' == url:
 if 'yad2' not in url:
     print('invalid URL.. exiting..')
     exit()
-print(f"Link chosen: {url}")
-pages = int(input("How many pages to search? \n *less than 0 will automatically choose 1: ") or 1)
+print(f"\nLink chosen: {url}\n")
+pages = int(input("How many pages to search? \n**less than 0 will automatically choose 1: ") or 1)
 if pages < 1:
     pages = 1
 chrome_options = webdriver.ChromeOptions()
 chrome_options.add_argument("--start-maximized")
+# Adding fake google user to avoid captcha
+ua = UserAgent()
+userAgent = ua.random
+print(userAgent)
+chrome_options.add_argument(f'user-agent={userAgent}')
 browser = webdriver.Chrome('./chromedriver', options=chrome_options)
 max_price = 28000
 max_kilo = 100_000
