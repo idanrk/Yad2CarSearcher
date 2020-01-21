@@ -3,64 +3,74 @@ import time
 
 
 def gatherdetails(max_price, max_kilo):
-    ## sleeping few seconds to load the page
-    time.sleep(4)
     global timesRun
-    firstime = True if timesRun == 1 else False
-    # gather detailes from the post
-    height = '9900'
-    browser.execute_script("window.scrollTo(0,{})".format(height))
-    ##sleeping to load the first post
-    time.sleep(3)
-    post = 0
+    firstsave = True if timesRun == 1 else False
+    # scroll to the first post
+    firstad = browser.find_element_by_xpath('//div[@class="feeditem table"]')
+    browser.execute_script("arguments[0].scrollIntoView({behavior: 'smooth'})", firstad)
+    ## sleeping few seconds to load the page
+    time.sleep(2)
+    post = 1
     for feed in browser.find_elements_by_xpath('//div[@class="feeditem table"]'):
         if post <= 20:
+            time.sleep(1)
             feed.click()
             post += 1
-            time.sleep(2)
-            # car_year = feed.find_element_by_xpath('.//div[@class="data"]/span').text
-            car_name = feed.find_element_by_xpath('.//div[@class="rows"]/span[@class="title"]').text
-            car_kilo = int(feed.find_element_by_xpath('.//dd[@id="more_details_kilometers"]/span').text)
-            car_price = feed.find_element_by_xpath('.//div[@data-test-id="item_price"]').text
+            time.sleep(1.5)
+            try:
+                car_kilo = int(feed.find_element_by_xpath('.//dd[@id="more_details_kilometers"]/span').text)
+                car_price = feed.find_element_by_xpath('.//div[@data-test-id="item_price"]').text
+            except Exception:
+                print('Loading was too long, could not retrieve the data from post, moving to next')
+                feed.find_element_by_xpath('*//div/div').click()
+                browser.execute_script("arguments[0].scrollIntoView({behavior: 'smooth'})", feed)
+                continue
             ## price recived '27,800 ₪', so seperating the number from the symbol..
             car_price = car_price.split()
             car_price = int(car_price[0].replace(',', ''))
             ## if its worthy, return True, then add to whishlist
             if calculator(max_price, max_kilo, car_price, car_kilo):
                 addwhishlist(feed)
-                if firstime:
+                if firstsave:
                     time.sleep(2)
-                    browser.find_element_by_xpath(
-                        '*//button[@class="y2-button y2-raised y2-primary left_button"]').click()
-                    timesRun += 1
-                    firstime = False
-            # closing post and moving to the next
-            time.sleep(1)
+                    understand = browser.find_element_by_xpath(
+                        '*//button[@class="y2-button y2-raised y2-primary left_button"]')
+                    browser.execute_script("arguments[0].scrollIntoView({behavior: 'smooth'})", understand)
+                    print(understand.text)
+                    understand.click()
+                    time.sleep(0.5)
+                    browser.execute_script("arguments[0].scrollIntoView({behavior: 'smooth'})", feed)
+                    firstsave = False
+                time.sleep(0.3)
+            timesRun += 1
+            ##close post##
             feed.find_element_by_xpath('*//div/div').click()
-            height = str(int(height) - 100)
-            browser.execute_script("window.scrollTo(0,{})".format(height))
+            # scrolling to the next#
+            browser.execute_script("arguments[0].scrollIntoView({behavior: 'smooth'})", feed)
 
 
-def calculator(max_price, max_kilo, price, kilo):
-#first if is to avoid fake posts
+def calculator(m_price, m_kilo, price, kilo):
+    # first if is to avoid fake posts
     if price > 1_000 and kilo > 1_000:
-        if price / max_price <= 0.85 and kilo / max_kilo <= 0.9:
+        if price / m_price <= 0.85 and kilo / m_kilo <= 0.9:
             return True
-        elif price / max_price <= 0.75:
+        elif price / m_price <= 0.75:
             return True
-        elif kilo / max_kilo <= 0.65:
+        elif kilo / m_kilo <= 0.65:
             return True
     else:
         return False
     return False
 
+
 def addwhishlist(feed):
     feed.find_element_by_xpath('.//button[@class="like_icon"]').click()
+
 
 ###### there is many sleeping functions because the site and posts must load so the code won't break ######
 print("""
 Please enter 'https://www.yad2.co.il/vehicles/private-cars', filter out your results as you wish.
-Mark Image&Price only and paste the URL
+*Note please mark image & price only and paste the URL\n
 """)
 url = str(input("You may enter '0' for default link in order to use test link: ") or '0')
 if '0' == url:
@@ -89,6 +99,10 @@ for page in range(1, pages + 1):
     url = url.replace('&page={}'.format(page - 1), '&page={}'.format(page))
     browser.get(url=url)
     time.sleep(3)
+    if browser.current_url != url:
+        print("Please go to yad2.co.il and solve the captcha")
+        browser.quit()
+        exit()
     print(f"going over page {page}")
     gatherdetails(int(max_price), int(max_kilo))
 time.sleep(2)
